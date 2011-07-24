@@ -1,0 +1,7 @@
+Displays a dinamyc graph which represents the popularity of a search term, and its temporal evolution, 
+using twitter + google search API.
+
+API + webserver written in python. 
+Frontend engine using prototype + google charts API.
+
+{Author tom@0x101.com}

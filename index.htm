@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="./js/webrank.js"></script>
+		<script type="text/javascript">
+			google.load("visualization", "1", {packages:["corechart"]});
+			google.load("prototype", "1.7.0.0");
+		</script>
+	</head>
+	<body>
+		<input type="text" id="searchTerm" value="" />
+		<div id="chart_div"></div>
+	</body>
+
+	<script type="text/javascript">
+			
+			var currentValuePosition = 0;
+			var data = null;
+			var chart = null;
+
+			window.setInterval(function() {
+
+				if ($('searchTerm') && $('searchTerm').value !== '') {
+
+					var searchTerm = $('searchTerm').value;
+					currentValuePosition++;
+
+					// Initialize the data table, if necessary
+					if (data == null) {
+						data = new google.visualization.DataTable();
+						data.addColumn('string', '#');
+						data.addColumn('number', 'Webrank');
+					}
+
+					// Initialize the area chart
+					if (chart == null) {
+						chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+					}
+	
+					// Make the AJAX request to the webrank API, and update the graph.
+					WebRank.getWebRank(searchTerm, function(webrank) {
+						data.addRow([''+currentValuePosition, webrank]);
+						
+						chart.draw(data, {
+							width: 1024, height: 240, title: 'Webrank',
+						    hAxis: {title: '', titleTextStyle: {color: '#FF0000'}}
+						});
+
+					});
+				}
+
+			}, WebRank.refreshTime);
+	</script>
+</html>
